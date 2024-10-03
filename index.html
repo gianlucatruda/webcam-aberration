@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>WebGL Playground</title>
+	<style>
+		body {
+			background-color: #121212;
+			color: #ffffff;
+			font-family: helvetica;
+			overflow: hidden;
+		}
+
+		div {
+			justify-content: center;
+			align-items: center;
+			margin: 1rem auto;
+			padding: 1rem auto;
+			display: flex;
+		}
+
+		canvas {
+			display: block;
+			border: 1px solid gray;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="canvasContainer">
+		<canvas id="myCanvas"></canvas>
+	</div>
+	<script>
+		const W = 500;
+		const H = 500;
+		const canvas = document.getElementById('myCanvas');
+		canvas.width = W;
+		canvas.height = H;
+		const gl = canvas.getContext('webgl');
+
+	</script>
+
+</body>
+
+</html>
