@@ -32,15 +32,9 @@
 	<div id="canvasContainer">
 		<canvas id="myCanvas"></canvas>
 	</div>
-	<script>
-		const W = 500;
-		const H = 500;
-		const canvas = document.getElementById('myCanvas');
-		canvas.width = W;
-		canvas.height = H;
-		const gl = canvas.getContext('webgl');
-
-	</script>
+	<script id="vertex-shader" type="x-shader/x-vertex" src="vertexShader.glsl"></script>
+	<script id="fragment-shader" type="x-shader/x-fragment" src="fragmentShader.glsl"></script>
+	<script src="main.js" type="module"></script>
 
 </body>
 
