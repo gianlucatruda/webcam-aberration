@@ -4,6 +4,8 @@ I wanted to be able to make WebGL/GLSL shader art projects in a quick and modula
 
 With some ChatGPT help, I made this vanilla web app. It's just a super simple page with a dynamically-resizing canvas which gets set up to run WebGL. Whatever you put in `fragmentShader.glsl` and `vertexShader.glsl` get's used to draw the contents of the canvas, with high-DPI support and live resizing.
 
+<img width="1000" alt="examples" src="https://github.com/user-attachments/assets/692203de-0140-4b0e-9413-5ac42a9a6dec">
+
 I mimicked the Shadertoy API, so any straightforward shaders (with no assets) from there can be copy-pasted to and from this project in the `fragmentShader.glsl` file:
 
 ```glsl
