@@ -1,5 +1,8 @@
 console.log("Main.js");
 
+window.addEventListener('resize', () => {
+	init(); // You may want to turn some functionalities in init into a separate resize function
+});
 async function fetchShader(url) {
 	const res = await fetch(url);
 	if (!res.ok) {
@@ -16,6 +19,13 @@ async function init() {
 		return;
 	}
 
+	// Adjust for high DPI devices
+	let dpi = window.devicePixelRatio;
+	let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+	let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+	// Scale the canvas by the device pixel ratio, maintaining the aspect ratio.
+	canvas.setAttribute('width', style_width * dpi);
+	canvas.setAttribute('height', style_height * dpi);
 	const vertexShaderSource = await fetchShader('vertexShader.glsl');
 	const fragmentShaderSource = await fetchShader('fragmentShader.glsl');
 
@@ -61,19 +71,16 @@ async function init() {
 
 	// Shadertoy variable names
 	const resolutionUniformLocation = gl.getUniformLocation(program, 'iResolution');
-	gl.uniform2f(resolutionUniformLocation, gl.drawingBufferWidth, gl.drawingBufferHeight);
+	gl.uniform2f(resolutionUniformLocation, canvas.width, canvas.height);
 	const timeUniformLocation = gl.getUniformLocation(program, 'iTime');
 	const mouseUniformLocation = gl.getUniformLocation(program, 'iMouse');
 
-
 	function render(time) {
+		gl.viewport(0, 0, canvas.width, canvas.height);
 		gl.uniform1f(timeUniformLocation, time * 0.001);  // time in seconds
-
 		gl.clearColor(0.0, 0.0, 0.0, 1.0);
 		gl.clear(gl.COLOR_BUFFER_BIT);
-
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
 		requestAnimationFrame(render);
 	}
 
