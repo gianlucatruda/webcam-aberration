@@ -9,31 +9,25 @@
 		body {
 			background-color: #121212;
 			color: #ffffff;
-			font-family: helvetica;
-			overflow: hidden;
-		}
-
-		div {
+			font-family: Helvetica, sans-serif;
+			margin: 0;
+			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin: 1rem auto;
-			padding: 1rem auto;
-			display: flex;
+			height: 100vh;
 		}
 
 		canvas {
 			display: block;
 			border: 1px solid gray;
+			width: 500px;
+			height: 500px;
 		}
 	</style>
 </head>
 
 <body>
-	<div id="canvasContainer">
-		<canvas id="myCanvas"></canvas>
-	</div>
-	<script id="vertex-shader" type="x-shader/x-vertex" src="vertexShader.glsl"></script>
-	<script id="fragment-shader" type="x-shader/x-fragment" src="fragmentShader.glsl"></script>
+	<canvas id="myCanvas"></canvas>
 	<script src="main.js" type="module"></script>
 
 </body>
