@@ -59,10 +59,12 @@ async function init() {
 	gl.enableVertexAttribArray(positionAttributeLocation);
 	gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 
-	const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
+	// Shadertoy variable names
+	const resolutionUniformLocation = gl.getUniformLocation(program, 'iResolution');
 	gl.uniform2f(resolutionUniformLocation, gl.drawingBufferWidth, gl.drawingBufferHeight);
+	const timeUniformLocation = gl.getUniformLocation(program, 'iTime');
+	const mouseUniformLocation = gl.getUniformLocation(program, 'iMouse');
 
-	const timeUniformLocation = gl.getUniformLocation(program, 'u_time');
 
 	function render(time) {
 		gl.uniform1f(timeUniformLocation, time * 0.001);  // time in seconds

@@ -1,14 +1,19 @@
 precision mediump float;
-uniform vec2 u_resolution;
-uniform float u_time;
+
+uniform vec2 iResolution; // viewport resolution (in pixels)
+uniform float iTime; // shader playback time (in seconds)
+uniform vec2 iMouse; // mouse pixel coords. xy: current (if MLB down), zw: click
+
+// Shadertoy default
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = fragCoord / iResolution.xy;
+    // Time varying pixel color
+    vec3 col = 0.5 + 0.5 * cos(iTime + uv.xyx + vec3(0, 2, 4));
+    // Output to screen
+    fragColor = vec4(col, 1.0);
+}
 
 void main() {
-    // Calculate normalized texture coordinates
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-
-    // Generate some example color based on position and time, creating a moving color pattern
-    vec3 col = 0.5 + 0.5 * cos(u_time + uv.xyx + vec3(0, 2, 4));
-
-    // Output to the screen
-    gl_FragColor = vec4(col, 1.0);
+    mainImage(gl_FragColor, gl_FragCoord.xy);
 }
