@@ -24,8 +24,32 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float G = tex.g;
     float B = tex.b;
 
-    vec3 thresh = vec3(R, G, B);
-    fragColor = vec4(thresh, 1.0);
+    float d = length(uv) * exp(-length(uv0));
+    float t = abs(sin(d * 4.0 + 1.0 * iTime) / 2.0);
+    // R = -pow(R, d*t);
+    // G = 0.1 / ((2.0 * G) - R + d*t) - t;
+    // G *= pow(R+G+B, t/.1);
+    // G = (3.0 * R)-G-B;
+    // G = (R+G+B)/3.0;
+    float total = R + G + B;
+    float cMin = min(min(R, G), B);
+    float thresh = min((total / 3.0) * 1.0, 0.8);
+    R = smoothstep(cMin, thresh, R);
+    G = smoothstep(cMin, thresh, G);
+    B = smoothstep(cMin, thresh, B);
+    // B = 0.5/(B + 2.0*t - 0.1);
+    // B = - pow(B, d);
+    // B *= pow(d, t);
+
+    // R = 0.1;
+    // G = 0.1;
+    // B = 0.1;
+
+    // R = pow(2.0 * (G - R), t);
+    // G = pow(G, t);
+    // B = pow((R + G), t);
+
+    fragColor = vec4(R, G, B, 1.0);
 }
 
 void main() {
