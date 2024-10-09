@@ -55,22 +55,21 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // // float threshG = tex.g; //(fract(floor(tex.g*res)/scl)*scl) * gray ;
     // // float threshB = tex.g; //(fract(floor(tex.b*res)/scl)*scl) * gray ;
     //
-    vec3 thresh = vec3(R, G, B);
+    vec3 thresh = vec3(G, B, R);
     //
     // // render the output
     // fragColor = vec4(thresh, 1.0);
 
     // For loops that use fract(uv) give a fractal effect
-    for (float i = 0.0; i < 1.0; i++) {
+    for (float i = 0.0; i < 3.0; i++) {
         uv = fract(uv * 1.619) - 0.5;
-        tex = fract(tex * 2.0) - 0.5;
 
-        float d = length(tex) * exp(length(tex));
+        float d = length(tex) * exp(length(uv));
         vec3 col = palette(length(tex) - i * 0.1 - iTime * 0.9);
         d = sin(d * 5.0 + iTime) / 5.0;
         d = abs(d);
         d = pow(0.01 / d, 1.9);
-        finalColor += col * d + thresh * 0.5;
+        finalColor += col * d + abs(thresh) * 0.2;
     }
     fragColor = vec4(finalColor, 1.0);
 }
