@@ -26,31 +26,21 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // Original origin of the canvas
     vec2 uv0 = uv;
 
-    // // Initialise for black
-    // vec3 finalColor = vec3(0.0);
-
-    //
-    // // For loops that use fract(uv) give a fractal effect
-    // for (float i = 0.0; i < 4.0; i++) {
-    //     uv = fract(uv * 1.619) - 0.5;
-    //
-    //     float d = length(uv) * exp(length(uv0));
-    //     vec3 col = palette(length(uv0) - i * 0.1 - iTime * 0.9);
-    //     d = sin(d * 5.0 + iTime) / 5.0;
-    //     d = abs(d);
-    //     d = pow(0.01 / d, 1.9);
-    //
-    //     finalColor += col * d;
-    // }
-    //
-    // fragColor = vec4(finalColor, 1.0); // alpha is often ignored
-
-    // vec2 uv = vTexCoord;
     // the texture is loaded upside down and backwards by default so lets flip it
-    // uv.y = 1.0 - uv.y;
+    uv.y = - 0.5 * uv.y + 0.5;
+    uv.x = 0.5 * uv.x + 0.5;
 
     vec4 tex = texture2D(u_texture, uv);
     float gray = (tex.r + tex.g + tex.b) / 3.0;
+
+    // Initialise for black
+    vec3 finalColor = vec3(0.0);
+
+
+
+    // fragColor = vec4(finalColor, 1.0); // alpha is often ignored
+
+    // vec2 uv = vTexCoord;
     // float res = 20.0;
     // float scl = res / (10.0);
     //
@@ -69,7 +59,20 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     //
     // // render the output
     // fragColor = vec4(thresh, 1.0);
-    fragColor = vec4(thresh, 1.0);
+
+    // For loops that use fract(uv) give a fractal effect
+    for (float i = 0.0; i < 1.0; i++) {
+        uv = fract(uv * 1.619) - 0.5;
+        tex = fract(tex * 2.0) - 0.5;
+
+        float d = length(tex) * exp(length(tex));
+        vec3 col = palette(length(tex) - i * 0.1 - iTime * 0.9);
+        d = sin(d * 5.0 + iTime) / 5.0;
+        d = abs(d);
+        d = pow(0.01 / d, 1.9);
+        finalColor += col * d + thresh * 0.5;
+    }
+    fragColor = vec4(finalColor, 1.0);
 }
 
 void main() {
