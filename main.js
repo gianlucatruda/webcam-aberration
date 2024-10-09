@@ -1,5 +1,3 @@
-console.log("Main.js");
-
 window.addEventListener('resize', () => {
 	init(); // You may want to turn some functionalities in init into a separate resize function
 });
@@ -19,13 +17,13 @@ async function init() {
 		return;
 	}
 
+	// Webcame feed becomes a texture, sent to fragment shader
 	const video = await setupWebcam();
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-
 
 	// Adjust for high DPI devices
 	let dpi = window.devicePixelRatio;
@@ -90,7 +88,6 @@ async function init() {
 		await new Promise(resolve => video.onloadedmetadata = resolve);
 		return video;
 	}
-
 
 	function render(time) {
 		gl.activeTexture(gl.TEXTURE0);
