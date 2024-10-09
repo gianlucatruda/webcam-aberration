@@ -4,6 +4,8 @@ uniform vec2 iResolution; // viewport resolution (in pixels)
 uniform float iTime; // shader playback time (in seconds)
 uniform vec2 iMouse; // mouse pixel coords. xy: current (if MLB down), zw: click
 
+uniform sampler2D u_texture;
+
 vec3 palette(float t) {
     //https://iquilezles.org/articles/palettes/
     vec3 a = vec3(0.1, 0.1, 0.1);

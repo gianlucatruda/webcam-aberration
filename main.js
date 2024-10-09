@@ -19,6 +19,14 @@ async function init() {
 		return;
 	}
 
+	const video = await setupWebcam();
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+
 	// Adjust for high DPI devices
 	let dpi = window.devicePixelRatio;
 	let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
@@ -75,7 +83,19 @@ async function init() {
 	const timeUniformLocation = gl.getUniformLocation(program, 'iTime');
 	const mouseUniformLocation = gl.getUniformLocation(program, 'iMouse');
 
+	async function setupWebcam() {
+		const video = document.getElementById('video');
+		const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+		video.srcObject = stream;
+		await new Promise(resolve => video.onloadedmetadata = resolve);
+		return video;
+	}
+
+
 	function render(time) {
+		gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
 		gl.viewport(0, 0, canvas.width, canvas.height);
 		gl.uniform1f(timeUniformLocation, time * 0.001);  // time in seconds
 		gl.clearColor(0.0, 0.0, 0.0, 1.0);
