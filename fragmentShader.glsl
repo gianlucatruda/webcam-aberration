@@ -32,11 +32,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     float t = sin(PI * iTime);
 
-    // R = -pow(R, d*t);
-    // G = 0.1 / ((2.0 * G) - R + d*t) - t;
-    // G *= pow(R+G+B, t/.1);
-    // G = (3.0 * R)-G-B;
-    // G = (R+G+B)/3.0;
     float cTotal = R + G + B;
     float cAvg = cTotal / 3.0;
     float cMin = min(min(R, G), B);
@@ -44,25 +39,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float thresh = min(cAvg, 0.7);
     float eps = 0.0001;
 
-    // R = d + t;
-    // G = d + t;
-    // B = d + t;
-
     R = smoothstep(cMin + eps, thresh, R);
     G = smoothstep(cMin + eps, thresh, G);
     B = smoothstep(cMin + eps, thresh, B);
-
-    // B = 0.5/(B + 2.0*t - 0.1);
-    // B = - pow(B, d);
-    // B *= pow(d, t);
-
-    // R = 0.1;
-    // G = 0.1;
-    // B = 0.1;
-
-    // R = pow(2.0 * (G - R), t);
-    // G = pow(G, t);
-    // B = pow((R + G), t);
 
     vec3 cCam = vec3(R, G, B);
     vec3 cOut = vec3(.0);
