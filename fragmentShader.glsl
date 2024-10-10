@@ -1,4 +1,4 @@
-precision mediump float;
+precision lowp float;
 
 uniform vec2 iResolution; // viewport resolution (in pixels)
 uniform float iTime; // shader playback time (in seconds)
@@ -25,6 +25,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float R = tex.r;
     float G = tex.g;
     float B = tex.b;
+
+    float r0 = tex.r;
+    float g0 = tex.g;
+    float b0 = tex.b;
 
     float t = sin(PI * iTime);
 
@@ -64,18 +68,17 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec3 cOut = vec3(.0);
 
     // float x2 = sin(d * 3.0 + iTime) / 4.0;
-    for (float i = 0.0; i < 4.0; i++) {
-        uv = fract(uv * 1.5) - 0.5;
+    for (float i = 0.0; i < 5.0; i++) {
+        uv = fract(uv * 1.618) - 0.5;
         float d = length(uv) * exp(-length(uv0));
-        float x1 = sin(d * 10.0 + iTime + cCam[0] + cCam[1] + cCam[2]) / 1.0;
-        cOut += cCam * pow(0.01 / (abs(length(uv0) + x1 + 0.4 * i)), 1.2);
-        // cOut[1] += abs(length(uv0) + x2);
-        // cOut[2] += fract(length(uv0) + x1 * -x2);
-
-        // cOut += pow(d * t, 2.0) - pow(d - t, 3.0);
+        float x1 = sin(d * 4.0 + iTime + R) / (2. * r0);
+        cOut += cCam * pow(0.1 / (abs(length(uv0) + x1 + B + i)), 2.0);
     }
     fragColor = vec4(cOut, 1.0);
-    // fragColor = vec4(tex.r, tex.g, tex.b, 1.0);
+    fragColor[0] += cMax - cMin;
+    fragColor[1] += cMax - cAvg;
+    fragColor[2] += 0.5 * thresh;
+    // fragColor = vec4(cCam, 1.0);
 }
 
 void main() {
